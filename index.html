@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Binärer Wald</title>
+
+    <!-- Import Google Font "Barlow Condensed Light" -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300&display=swap');
+
+        body {
+            font-family: 'Barlow Condensed', sans-serif;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 20px;
+            padding: 15px;
+        }
+
+        .instruction {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 18px;
+            margin: 10px auto;
+            width: 90%;
+            max-width: 500px;
+            line-height: 1.4;
+        }
+
+        .bold-text {
+            font-weight: bold;
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 5px;
+            text-align: center;
+        }
+
+        input {
+            width: 12vw; /* Responsive input size */
+            height: 12vw; /* Make inputs larger for mobile */
+            max-width: 50px; /* Limit size on large screens */
+            max-height: 50px;
+            font-size: 22px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 15px 20px;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            font-size: 22px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .small-text {
+            font-size: 12px;
+            color: gray;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <p class="instruction">
+        Dies ist der Prototyp einer möglichen Kunstinstallation – ein binärer Wald. <br>
+        Jeder Buchstabe, den wir auf dem Computer tippen, hat eine binäre Entsprechung aus 0 und 1.
+    </p>
+
+    <p class="instruction">Hier kannst du ein verborgenes Wort entschlüsseln:</p>
+    
+    <p class="instruction bold-text">Kugelbaum = 0</p>
+    <p class="instruction bold-text">Tanne = 1</p>
+
+    <p class="instruction">Trage die richtigen Zahlen ein und finde das Wort heraus. Viel Erfolg!</p>
+    
+    <table>
+        <tr>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+        </tr>
+        <tr>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+        </tr>
+        <tr>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+        </tr>
+        <tr>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+            <td><input type="text" maxlength="1" class="binary-input"></td>
+        </tr>
+    </table>
+
+    <button onclick="checkCode()">Submit</button>
+
+    <p id="result"></p>
+
+    <p class="small-text">*dieses Programm wurde komplett mithilfe von KI erstellt</p>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputs = document.querySelectorAll(".binary-input");
+
+            inputs.forEach((input, index) => {
+                input.addEventListener("input", function(event) {
+                    let value = event.target.value;
+
+                    // Allow only 0 or 1
+                    if (value !== "0" && value !== "1") {
+                        event.target.value = ""; // Clear invalid input
+                        return;
+                    }
+
+                    // Move to next input field if exists
+                    if (index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+
+                input.addEventListener("keydown", function(event) {
+                    // Move to previous input if Backspace is pressed
+                    if (event.key === "Backspace" && index > 0 && !event.target.value) {
+                        inputs[index - 1].focus();
+                    }
+                });
+            });
+        });
+
+        function checkCode() {
+            const correctCode = ["01010111", "01100001", "01101100", "01100100"];
+
+            let inputs = document.querySelectorAll(".binary-input");
+            let userCode = [];
+
+            for (let i = 0; i < 4; i++) {
+                let rowBinary = "";
+                for (let j = 0; j < 8; j++) {
+                    rowBinary += inputs[i * 8 + j].value.trim();
+                }
+                userCode.push(rowBinary);
+            }
+
+            document.getElementById("result").innerHTML =
+                JSON.stringify(userCode) === JSON.stringify(correctCode)
+                    ? "<h2 style='color: green;'>✅ WALD</h2>"
+                    : "<p style='color: red;'>🌿 Fast geschafft! Versuch es noch einmal.</p>";
+        }
+    </script>
+
+</body>
+</html>
