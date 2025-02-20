@@ -72,12 +72,47 @@
             font-size: 22px;
             margin-top: 15px;
             font-weight: bold;
+            position: relative;
         }
 
         .small-text {
             font-size: 12px;
             color: gray;
             margin-top: 20px;
+        }
+
+        .success-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .success-text {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, 0);
+            z-index: 2;
+            font-size: 75px;
+            color: rgb(10, 61, 29);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            input.binary-input {
+                width: 7vw;  /* Decrease from 12vw to 8vw for smaller screens */
+                height: 7vw;
+                max-width: 35px; /* Adjust the max size if desired */
+                max-height: 35px;
+            }
         }
     </style>
 </head>
@@ -175,7 +210,7 @@
 
         function checkCode() {
             const correctCode = ["01010111", "01100001", "01101100", "01100100"];
-
+            const imag_url = 'https://media-hosting.imagekit.io//932bb1cec7bf4a58/screenshot_1739885630565.png?Expires=1834493631&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=vFtwHzbuLN9ha8-a03W4XCy9OcS~u8zxgAsmXlUxcer1XOL2hNNKfxOMAYYeKDBsGTiwqUmUwLEWTGed-k~k~XJbHJ1P5GiQVYJxSvTmSIMFNmMLAsdqCfrHHA6h0FTcpohtrPq8RyKqiX7XI4oFizpN~D08uS9JUgCcA1Al6ETHX1kuHFeIx8OQobnP3cM~WBhoVbjPtZW3qgRio~6LvCjx9EW2SA-bfnazFl0vXJ1DG1Z7fNSCIwDjtKJgSwZFqbAred~ATbZsdEEdXt3FrVauwT8kyiS5NqeFQKUTNVmF0w9a8Cj8NXGsfnYgZN1EqE1C04pycwD1pnHPRKXVCw__';
             let inputs = document.querySelectorAll(".binary-input");
             let userCode = [];
 
@@ -187,12 +222,36 @@
                 userCode.push(rowBinary);
             }
 
-            document.getElementById("result").innerHTML =
-                JSON.stringify(userCode) === JSON.stringify(correctCode)
-                    ? "<h2 style='color: green;'>✅ WALD</h2>"
-                    : "<p style='color: red;'>🌿 Fast geschafft! Versuch es noch einmal.</p>";
+            const resultElement = document.getElementById("result");
+            
+            if (JSON.stringify(userCode) === JSON.stringify(correctCode)) {
+
+                // Hide all content except success elements
+                document.querySelectorAll('table, .instruction, button, .small-text').forEach(el => {
+                    el.classList.add('hidden');
+                });
+
+                // Remove any existing background image
+                const existingImg = document.querySelector('.success-image');
+                if (existingImg) existingImg.remove();
+                
+                // Create and add the new background image
+                const img = document.createElement('img');
+                img.src = imag_url;
+                img.className = 'success-image';
+                document.body.appendChild(img);
+                
+                resultElement.innerHTML = "<div class='success-text'>WALD</div>";
+            } else {
+                // Remove background image if exists
+                const existingImg = document.querySelector('.success-image');
+                if (existingImg) existingImg.remove();
+                
+                resultElement.innerHTML = "<p style='color: red;'>🌿 Fast geschafft! Versuch es noch einmal.</p>";
+            }
         }
     </script>
 
 </body>
 </html>
+
